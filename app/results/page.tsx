@@ -50,6 +50,10 @@ export default function Results() {
     setSaved(true);
   };
 
+  const getYoutubeUrl = (query: string) => {
+    return 'https://www.youtube.com/results?search_query=' + encodeURIComponent(query);
+  };
+
   if (loading) return (
     <main className="min-h-screen bg-gray-950 text-white flex items-center justify-center">
       <div className="text-center">
@@ -63,7 +67,7 @@ export default function Results() {
     <main className="min-h-screen bg-gray-950 text-white px-4 py-12">
       <div className="max-w-2xl mx-auto">
         <a href="/" onClick={() => localStorage.removeItem('currentProblem')} className="text-gray-500 hover:text-white text-sm mb-8 flex items-center gap-1">
-          ← Back to Home
+          Back to Home
         </a>
 
         <h2 className="text-xl text-gray-400 mb-1 mt-4">Your problem:</h2>
@@ -116,11 +120,30 @@ export default function Results() {
 
             {plan.youtubeQuery && (
               
-                href={`https://www.youtube.com/results?search_query=${encodeURIComponent(plan.youtubeQuery)}`}
+                href={getYoutubeUrl(plan.youtubeQuery)}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="bg-gray-900 rounded-xl p-5 flex items-center justify-between hover:bg-gray-800 transition"
               >
                 <div>
                   <h3 className="text-gray-400 text-sm font-bold uppercase tracking-wider mb-1">Recommended Videos</h3>
-                  <p className="text-white font-semibold">Search: "{plan.
+                  <p className="text-white font-semibold">Search: "{plan.youtubeQuery}"</p>
+                  <p className="text-gray-400 text-sm mt-1">Click to find related BJJ tutorials on YouTube</p>
+                </div>
+                <div className="text-red-500 text-3xl ml-4">▶</div>
+              </a>
+            )}
+
+            <button
+              onClick={saveToLog}
+              disabled={saved}
+              className={`w-full py-4 rounded-xl font-bold text-lg transition ${saved ? 'bg-green-800 text-green-300 cursor-default' : 'bg-red-600 hover:bg-red-700 text-white'}`}
+            >
+              {saved ? '✓ Saved to Log' : 'Save to My Log'}
+            </button>
+          </div>
+        )}
+      </div>
+    </main>
+  );
+}
