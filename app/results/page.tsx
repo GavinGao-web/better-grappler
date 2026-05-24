@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { matchResources, Resource } from '../data/resources';
 
 type TrainingPlan = {
   focus: string;
@@ -13,6 +14,7 @@ type TrainingPlan = {
 export default function Results() {
   const [problem, setProblem] = useState('');
   const [plan, setPlan] = useState<TrainingPlan | null>(null);
+  const [resources, setResources] = useState<Resource[]>([]);
   const [loading, setLoading] = useState(true);
   const [saved, setSaved] = useState(false);
 
@@ -23,6 +25,7 @@ export default function Results() {
       return;
     }
     setProblem(storedProblem);
+    setResources(matchResources(storedProblem));
     fetchPlan(storedProblem);
   }, []);
 
@@ -62,20 +65,24 @@ export default function Results() {
     <main className="min-h-screen bg-gray-950 text-white px-4 py-12">
       <div className="max-w-2xl mx-auto">
         <a href="/" onClick={() => localStorage.removeItem('currentProblem')} className="text-gray-500 hover:text-white text-sm mb-8 flex items-center gap-1">
-          Back to Home
+          ← Back to Home
         </a>
+
         <h2 className="text-xl text-gray-400 mb-1 mt-4">Your problem:</h2>
         <p className="text-white text-lg font-semibold mb-8 bg-gray-900 rounded-xl px-4 py-3">"{problem}"</p>
+
         {plan && (
           <div className="flex flex-col gap-6">
             <div className="bg-red-950 border border-red-800 rounded-xl p-5">
               <h3 className="text-red-400 text-sm font-bold uppercase tracking-wider mb-1">Focus Area</h3>
               <p className="text-white text-xl font-bold">{plan.focus}</p>
             </div>
+
             <div className="bg-gray-900 rounded-xl p-5">
               <h3 className="text-gray-400 text-sm font-bold uppercase tracking-wider mb-2">Coach Note</h3>
               <p className="text-gray-200 leading-relaxed">{plan.coachNote}</p>
             </div>
+
             <div className="bg-gray-900 rounded-xl p-5">
               <h3 className="text-gray-400 text-sm font-bold uppercase tracking-wider mb-3">Techniques to Study</h3>
               <ul className="flex flex-col gap-2">
@@ -86,6 +93,7 @@ export default function Results() {
                 ))}
               </ul>
             </div>
+
             <div className="bg-gray-900 rounded-xl p-5">
               <h3 className="text-gray-400 text-sm font-bold uppercase tracking-wider mb-3">Drills</h3>
               <ul className="flex flex-col gap-2">
@@ -96,6 +104,7 @@ export default function Results() {
                 ))}
               </ul>
             </div>
+
             <div className="bg-gray-900 rounded-xl p-5">
               <h3 className="text-gray-400 text-sm font-bold uppercase tracking-wider mb-3">Sparring Goals</h3>
               <ul className="flex flex-col gap-2">
@@ -106,7 +115,30 @@ export default function Results() {
                 ))}
               </ul>
             </div>
-            <button onClick={saveToLog} disabled={saved} className={`w-full py-4 rounded-xl font-bold text-lg transition ${saved ? 'bg-green-800 text-green-300 cursor-default' : 'bg-red-600 hover:bg-red-700 text-white'}`}>
+
+            {resources.length > 0 && (
+              <div className="bg-gray-900 rounded-xl p-5">
+                <h3 className="text-gray-400 text-sm font-bold uppercase tracking-wider mb-3">Recommended Videos</h3>
+                <div className="flex flex-col gap-3">
+                  {resources.map((r) => (
+                    <a key={r.id} href={r.url} target="_blank" rel="noopener noreferrer"
+                      className="flex gap-3 items-center hover:bg-gray-800 rounded-lg p-2 transition">
+                      <img src={r.thumbnail} alt={r.title} className="w-24 h-16 object-cover rounded-lg flex-shrink-0" />
+                      <div>
+                        <p className="text-white text-sm font-semibold">{r.title}</p>
+                        <p className="text-gray-400 text-xs mt-1">{r.channel}</p>
+                      </div>
+                    </a>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            <button
+              onClick={saveToLog}
+              disabled={saved}
+              className={`w-full py-4 rounded-xl font-bold text-lg transition ${saved ? 'bg-green-800 text-green-300 cursor-default' : 'bg-red-600 hover:bg-red-700 text-white'}`}
+            >
               {saved ? '✓ Saved to Log' : 'Save to My Log'}
             </button>
           </div>
