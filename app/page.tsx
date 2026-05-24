@@ -35,6 +35,11 @@ export default function Home() {
           <p className="text-gray-400 text-lg">
             Describe your training problem. Get a structured plan.
           </p>
+          <div className="flex justify-center mt-4">
+            <a href="/log" className="text-gray-500 hover:text-white text-sm border border-gray-700 rounded-lg px-4 py-2 transition">
+              View My Training Log →
+            </a>
+          </div>
         </div>
         <textarea
           className="w-full bg-gray-900 border border-gray-700 rounded-xl p-4 text-white placeholder-gray-500 resize-none h-36 focus:outline-none focus:border-red-500 transition"
