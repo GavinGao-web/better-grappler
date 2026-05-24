@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { matchResources, Resource } from '../data/resources';
 
 type TrainingPlan = {
   focus: string;
@@ -9,12 +8,12 @@ type TrainingPlan = {
   drills: string[];
   sparringGoals: string[];
   coachNote: string;
+  youtubeQuery: string;
 };
 
 export default function Results() {
   const [problem, setProblem] = useState('');
   const [plan, setPlan] = useState<TrainingPlan | null>(null);
-  const [resources, setResources] = useState<Resource[]>([]);
   const [loading, setLoading] = useState(true);
   const [saved, setSaved] = useState(false);
 
@@ -25,7 +24,6 @@ export default function Results() {
       return;
     }
     setProblem(storedProblem);
-    setResources(matchResources(storedProblem));
     fetchPlan(storedProblem);
   }, []);
 
@@ -116,34 +114,13 @@ export default function Results() {
               </ul>
             </div>
 
-            {resources.length > 0 && (
-              <div className="bg-gray-900 rounded-xl p-5">
-                <h3 className="text-gray-400 text-sm font-bold uppercase tracking-wider mb-3">Recommended Videos</h3>
-                <div className="flex flex-col gap-3">
-                  {resources.map((r) => (
-                    <a key={r.id} href={r.url} target="_blank" rel="noopener noreferrer"
-                      className="flex gap-3 items-center hover:bg-gray-800 rounded-lg p-2 transition">
-                      <img src={r.thumbnail} alt={r.title} className="w-24 h-16 object-cover rounded-lg flex-shrink-0" />
-                      <div>
-                        <p className="text-white text-sm font-semibold">{r.title}</p>
-                        <p className="text-gray-400 text-xs mt-1">{r.channel}</p>
-                      </div>
-                    </a>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            <button
-              onClick={saveToLog}
-              disabled={saved}
-              className={`w-full py-4 rounded-xl font-bold text-lg transition ${saved ? 'bg-green-800 text-green-300 cursor-default' : 'bg-red-600 hover:bg-red-700 text-white'}`}
-            >
-              {saved ? '✓ Saved to Log' : 'Save to My Log'}
-            </button>
-          </div>
-        )}
-      </div>
-    </main>
-  );
-}
+            {plan.youtubeQuery && (
+              
+                href={`https://www.youtube.com/results?search_query=${encodeURIComponent(plan.youtubeQuery)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-gray-900 rounded-xl p-5 flex items-center justify-between hover:bg-gray-800 transition"
+              >
+                <div>
+                  <h3 className="text-gray-400 text-sm font-bold uppercase tracking-wider mb-1">Recommended Videos</h3>
+                  <p className="text-white font-semibold">Search: "{plan.

@@ -24,7 +24,8 @@ Respond ONLY with a JSON object, no extra text:
   "techniques": ["technique 1", "technique 2", "technique 3", "technique 4"],
   "drills": ["drill 1", "drill 2", "drill 3", "drill 4"],
   "sparringGoals": ["goal 1", "goal 2", "goal 3"],
-  "coachNote": "2-3 sentence coaching insight about this specific problem"
+  "coachNote": "2-3 sentence coaching insight about this specific problem",
+  "youtubeQuery": "3-5 word YouTube search query for BJJ videos related to this problem"
 }`,
         },
       ],
