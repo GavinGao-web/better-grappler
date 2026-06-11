@@ -71,7 +71,7 @@ export default function Results() {
         </a>
 
         <h2 className="text-xl text-gray-400 mb-1 mt-4">Your problem:</h2>
-        <p className="text-white text-lg font-semibold mb-8 bg-gray-900 rounded-xl px-4 py-3">"{problem}"</p>
+        <p className="text-white text-lg font-semibold mb-8 bg-gray-900 rounded-xl px-4 py-3">{'"'}{problem}{'"'}</p>
 
         {plan && (
           <div className="flex flex-col gap-6">
@@ -127,7 +127,7 @@ export default function Results() {
               >
                 <div>
                   <h3 className="text-gray-400 text-sm font-bold uppercase tracking-wider mb-1">Recommended Videos</h3>
-                  <p className="text-white font-semibold">Search: "{plan.youtubeQuery}"</p>
+                  <p className="text-white font-semibold">Search: {'"'}{plan.youtubeQuery}{'"'}</p>
                   <p className="text-gray-400 text-sm mt-1">Click to find related BJJ tutorials on YouTube</p>
                 </div>
                 <div className="text-red-500 text-3xl ml-4">▶</div>
