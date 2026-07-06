@@ -118,7 +118,8 @@ export default function Results() {
               </ul>
             </div>
 
-            {plan.youtubeQuery && (
+            {plan.youtubeQuery {plan.youtubeQuery && ({plan.youtubeQuery && ( (
+              <a
               
                 href={getYoutubeUrl(plan.youtubeQuery)}
                 target="_blank"
