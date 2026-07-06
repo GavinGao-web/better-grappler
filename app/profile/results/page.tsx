@@ -31,51 +31,74 @@ const attrLabels: Record<string, string> = {
 
 function FighterSVG({ attributes }: { attributes: Analysis['attributes'] }) {
   const color = (val: number) => val >= 7 ? '#22c55e' : val >= 4 ? '#eab308' : '#ef4444';
-  const opacity = (val: number) => 0.3 + (val / 10) * 0.7;
+  const glow = (val: number) => val >= 7 ? '#22c55e' : val >= 4 ? '#eab308' : '#ef4444';
 
   return (
-    <svg viewBox="0 0 200 320" className="w-48 mx-auto" xmlns="http://www.w3.org/2000/svg">
-      {/* Head */}
-      <circle cx="100" cy="30" r="22" fill={color(attributes.chokes)} opacity={opacity(attributes.chokes)} />
-      <circle cx="100" cy="30" r="22" fill="none" stroke={color(attributes.chokes)} strokeWidth="2" />
-      <text x="100" y="34" textAnchor="middle" fontSize="8" fill="white" fontWeight="bold">CHOKE</text>
+    <svg viewBox="0 0 300 420" className="w-64 mx-auto" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <filter id="glow">
+          <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+          <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+      </defs>
 
-      {/* Neck / Upper body */}
-      <rect x="78" y="52" width="44" height="10" rx="4" fill={color(attributes.standing)} opacity={opacity(attributes.standing)} />
+      {/* HEAD */}
+      <circle cx="150" cy="45" r="32" fill="#1f2937" stroke={color(attributes.chokes)} strokeWidth="3" filter="url(#glow)" />
+      <circle cx="150" cy="45" r="32" fill={color(attributes.chokes)} opacity="0.15" />
+      {/* Face */}
+      <circle cx="138" cy="40" r="4" fill={color(attributes.chokes)} opacity="0.8"/>
+      <circle cx="162" cy="40" r="4" fill={color(attributes.chokes)} opacity="0.8"/>
+      <path d="M138 55 Q150 63 162 55" stroke={color(attributes.chokes)} strokeWidth="2.5" fill="none" strokeLinecap="round"/>
+      {/* Choke label */}
+      <text x="150" y="90" textAnchor="middle" fontSize="9" fill={color(attributes.chokes)} fontWeight="bold" opacity="0.9">CHOKES {attributes.chokes}/10</text>
 
-      {/* Torso - standing zone */}
-      <rect x="68" y="62" width="64" height="60" rx="8" fill={color(attributes.standing)} opacity={opacity(attributes.standing)} />
-      <rect x="68" y="62" width="64" height="60" rx="8" fill="none" stroke={color(attributes.standing)} strokeWidth="2" />
-      <text x="100" y="88" textAnchor="middle" fontSize="7" fill="white" fontWeight="bold">STANDING</text>
-      <text x="100" y="100" textAnchor="middle" fontSize="7" fill="white" fontWeight="bold">{attributes.standing}/10</text>
+      {/* NECK */}
+      <rect x="140" y="77" width="20" height="16" rx="4" fill="#1f2937" stroke={color(attributes.standing)} strokeWidth="1.5"/>
 
-      {/* Left arm - top control */}
-      <rect x="30" y="65" width="36" height="22" rx="6" fill={color(attributes.topControl)} opacity={opacity(attributes.topControl)} />
-      <rect x="30" y="65" width="36" height="22" rx="6" fill="none" stroke={color(attributes.topControl)} strokeWidth="1.5" />
-      <text x="48" y="79" textAnchor="middle" fontSize="6" fill="white" fontWeight="bold">TOP</text>
+      {/* TORSO */}
+      <rect x="100" y="93" width="100" height="90" rx="14" fill="#1f2937" stroke={color(attributes.standing)} strokeWidth="3" filter="url(#glow)"/>
+      <rect x="100" y="93" width="100" height="90" rx="14" fill={color(attributes.standing)} opacity="0.1"/>
+      {/* Belt line */}
+      <rect x="100" y="155" width="100" height="12" rx="0" fill={color(attributes.standing)} opacity="0.3"/>
+      <text x="150" y="130" textAnchor="middle" fontSize="10" fill="white" fontWeight="bold">STANDING</text>
+      <text x="150" y="148" textAnchor="middle" fontSize="18" fill={color(attributes.standing)} fontWeight="black">{attributes.standing}</text>
 
-      {/* Right arm - guard passing */}
-      <rect x="134" y="65" width="36" height="22" rx="6" fill={color(attributes.guardPassing)} opacity={opacity(attributes.guardPassing)} />
-      <rect x="134" y="65" width="36" height="22" rx="6" fill="none" stroke={color(attributes.guardPassing)} strokeWidth="1.5" />
-      <text x="152" y="79" textAnchor="middle" fontSize="6" fill="white" fontWeight="bold">PASS</text>
+      {/* LEFT ARM - Top Control */}
+      <rect x="52" y="93" width="42" height="28" rx="10" fill="#1f2937" stroke={color(attributes.topControl)} strokeWidth="2.5" filter="url(#glow)"/>
+      <rect x="52" y="93" width="42" height="28" rx="10" fill={color(attributes.topControl)} opacity="0.2"/>
+      <rect x="44" y="121" width="30" height="50" rx="10" fill="#1f2937" stroke={color(attributes.topControl)} strokeWidth="2"/>
+      <rect x="44" y="121" width="30" height="50" rx="10" fill={color(attributes.topControl)} opacity="0.15"/>
+      <text x="73" y="112" textAnchor="middle" fontSize="7.5" fill={color(attributes.topControl)} fontWeight="bold">TOP</text>
+      <text x="73" y="122" textAnchor="middle" fontSize="7.5" fill={color(attributes.topControl)} fontWeight="bold">{attributes.topControl}/10</text>
 
-      {/* Hips - bottom defense */}
-      <rect x="72" y="122" width="56" height="40" rx="6" fill={color(attributes.bottomDefense)} opacity={opacity(attributes.bottomDefense)} />
-      <rect x="72" y="122" width="56" height="40" rx="6" fill="none" stroke={color(attributes.bottomDefense)} strokeWidth="2" />
-      <text x="100" y="139" textAnchor="middle" fontSize="7" fill="white" fontWeight="bold">BOTTOM</text>
-      <text x="100" y="151" textAnchor="middle" fontSize="7" fill="white" fontWeight="bold">{attributes.bottomDefense}/10</text>
+      {/* RIGHT ARM - Guard Passing */}
+      <rect x="206" y="93" width="42" height="28" rx="10" fill="#1f2937" stroke={color(attributes.guardPassing)} strokeWidth="2.5" filter="url(#glow)"/>
+      <rect x="206" y="93" width="42" height="28" rx="10" fill={color(attributes.guardPassing)} opacity="0.2"/>
+      <rect x="226" y="121" width="30" height="50" rx="10" fill="#1f2937" stroke={color(attributes.guardPassing)} strokeWidth="2"/>
+      <rect x="226" y="121" width="30" height="50" rx="10" fill={color(attributes.guardPassing)} opacity="0.15"/>
+      <text x="227" y="112" textAnchor="middle" fontSize="7.5" fill={color(attributes.guardPassing)} fontWeight="bold">PASS</text>
+      <text x="227" y="122" textAnchor="middle" fontSize="7.5" fill={color(attributes.guardPassing)} fontWeight="bold">{attributes.guardPassing}/10</text>
 
-      {/* Left leg - leg locks */}
-      <rect x="58" y="162" width="36" height="80" rx="8" fill={color(attributes.legLocks)} opacity={opacity(attributes.legLocks)} />
-      <rect x="58" y="162" width="36" height="80" rx="8" fill="none" stroke={color(attributes.legLocks)} strokeWidth="1.5" />
-      <text x="76" y="200" textAnchor="middle" fontSize="6.5" fill="white" fontWeight="bold">LEG</text>
-      <text x="76" y="210" textAnchor="middle" fontSize="6.5" fill="white" fontWeight="bold">LOCKS</text>
+      {/* HIPS - Bottom Defense */}
+      <rect x="105" y="183" width="90" height="45" rx="10" fill="#1f2937" stroke={color(attributes.bottomDefense)} strokeWidth="3" filter="url(#glow)"/>
+      <rect x="105" y="183" width="90" height="45" rx="10" fill={color(attributes.bottomDefense)} opacity="0.15"/>
+      <text x="150" y="202" textAnchor="middle" fontSize="9" fill="white" fontWeight="bold">BOTTOM</text>
+      <text x="150" y="220" textAnchor="middle" fontSize="16" fill={color(attributes.bottomDefense)} fontWeight="black">{attributes.bottomDefense}</text>
 
-      {/* Right leg - leg locks */}
-      <rect x="106" y="162" width="36" height="80" rx="8" fill={color(attributes.legLocks)} opacity={opacity(attributes.legLocks)} />
-      <rect x="106" y="162" width="36" height="80" rx="8" fill="none" stroke={color(attributes.legLocks)} strokeWidth="1.5" />
-      <text x="124" y="200" textAnchor="middle" fontSize="6.5" fill="white" fontWeight="bold">LEG</text>
-      <text x="124" y="210" textAnchor="middle" fontSize="6.5" fill="white" fontWeight="bold">LOCKS</text>
+      {/* LEFT LEG - Leg Locks */}
+      <rect x="107" y="228" width="38" height="90" rx="12" fill="#1f2937" stroke={color(attributes.legLocks)} strokeWidth="2.5" filter="url(#glow)"/>
+      <rect x="107" y="228" width="38" height="90" rx="12" fill={color(attributes.legLocks)} opacity="0.15"/>
+      <rect x="103" y="308" width="44" height="22" rx="8" fill="#1f2937" stroke={color(attributes.legLocks)} strokeWidth="2"/>
+      <rect x="103" y="308" width="44" height="22" rx="8" fill={color(attributes.legLocks)} opacity="0.2"/>
+      <text x="126" y="270" textAnchor="middle" fontSize="8" fill={color(attributes.legLocks)} fontWeight="bold">LEG</text>
+      <text x="126" y="282" textAnchor="middle" fontSize="8" fill={color(attributes.legLocks)} fontWeight="bold">LOCKS</text>
+      <text x="126" y="294" textAnchor="middle" fontSize="8" fill={color(attributes.legLocks)} fontWeight="bold">{attributes.legLocks}/10</text>
+
+      {/* RIGHT LEG - Leg Locks */}
+      <rect x="155" y="228" width="38" height="90" rx="12" fill="#1f2937" stroke={color(attributes.legLocks)} strokeWidth="2.5" filter="url(#glow)"/>
+      <rect x="155" y="228" width="38" height="90" rx="12" fill={color(attributes.legLocks)} opacity="0.15"/>
+      <rect x="153" y="308" width="44" height="22" rx="8" fill="#1f2937" stroke={color(attributes.legLocks)} strokeWidth="2"/>
+      <rect x="153" y="308" width="44" height="22" rx="8" fill={color(attributes.legLocks)} opacity="0.2"/>
     </svg>
   );
 }
@@ -126,18 +149,16 @@ export default function ProfileResults() {
         </div>
 
         <div className="flex flex-col gap-6">
-          {/* Fighter SVG + Legend */}
-          <div className="bg-gray-900 rounded-xl p-5">
-            <h3 className="text-gray-400 text-sm font-bold uppercase tracking-wider mb-4 text-center">Fighter Map</h3>
+          <div className="bg-gray-900 rounded-xl p-6">
+            <h3 className="text-gray-400 text-sm font-bold uppercase tracking-wider mb-5 text-center">Fighter Map</h3>
             <FighterSVG attributes={analysis.attributes} />
-            <div className="flex justify-center gap-6 mt-4 text-xs">
-              <div className="flex items-center gap-1"><div className="w-3 h-3 rounded-full bg-green-500"/><span className="text-gray-400">Strong (7-10)</span></div>
-              <div className="flex items-center gap-1"><div className="w-3 h-3 rounded-full bg-yellow-500"/><span className="text-gray-400">Average (4-6)</span></div>
-              <div className="flex items-center gap-1"><div className="w-3 h-3 rounded-full bg-red-500"/><span className="text-gray-400">Weak (1-3)</span></div>
+            <div className="flex justify-center gap-6 mt-5 text-xs">
+              <div className="flex items-center gap-1.5"><div className="w-3 h-3 rounded-full bg-green-500"/><span className="text-gray-400">Strong (7-10)</span></div>
+              <div className="flex items-center gap-1.5"><div className="w-3 h-3 rounded-full bg-yellow-500"/><span className="text-gray-400">Average (4-6)</span></div>
+              <div className="flex items-center gap-1.5"><div className="w-3 h-3 rounded-full bg-red-500"/><span className="text-gray-400">Weak (1-3)</span></div>
             </div>
           </div>
 
-          {/* Attribute Bars */}
           <div className="bg-gray-900 rounded-xl p-5">
             <h3 className="text-gray-400 text-sm font-bold uppercase tracking-wider mb-4">Attribute Ratings</h3>
             <div className="flex flex-col gap-3">
