@@ -38,6 +38,7 @@ export default function Home() {
           <div className="flex justify-center mt-4">
             <a href="/log" className="text-gray-500 hover:text-white text-sm border border-gray-700 rounded-lg px-4 py-2 transition">
               View My Training Log →
+          <a href="/profile" className="text-gray-500 hover:text-white text-sm border border-gray-700 rounded-lg px-4 py-2 transition">Fighter Profile →</a>
             </a>
           </div>
         </div>
