@@ -50,10 +50,6 @@ export default function Results() {
     setSaved(true);
   };
 
-  const getYoutubeUrl = (query: string) => {
-    return 'https://www.youtube.com/results?search_query=' + encodeURIComponent(query);
-  };
-
   if (loading) return (
     <main className="min-h-screen bg-gray-950 text-white flex items-center justify-center">
       <div className="text-center">
@@ -118,21 +114,12 @@ export default function Results() {
               </ul>
             </div>
 
-            {plan.youtubeQuery {plan.youtubeQuery && ({plan.youtubeQuery && ( (
-              <a
-              
-                href={getYoutubeUrl(plan.youtubeQuery)}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="bg-gray-900 rounded-xl p-5 flex items-center justify-between hover:bg-gray-800 transition"
-              >
-                <div>
-                  <h3 className="text-gray-400 text-sm font-bold uppercase tracking-wider mb-1">Recommended Videos</h3>
-                  <p className="text-white font-semibold">Search: {'"'}{plan.youtubeQuery}{'"'}</p>
-                  <p className="text-gray-400 text-sm mt-1">Click to find related BJJ tutorials on YouTube</p>
-                </div>
-                <div className="text-red-500 text-3xl ml-4">▶</div>
-              </a>
+            {plan.youtubeQuery && (
+              <div className="bg-gray-900 rounded-xl p-5">
+                <h3 className="text-gray-400 text-sm font-bold uppercase tracking-wider mb-2">Recommended Search</h3>
+                <p className="text-white font-semibold">🔍 {plan.youtubeQuery}</p>
+                <p className="text-gray-400 text-sm mt-1">Search this on YouTube to find related BJJ tutorials</p>
+              </div>
             )}
 
             <button
