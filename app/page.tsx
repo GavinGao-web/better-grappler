@@ -35,16 +35,11 @@ export default function Home() {
           <p className="text-gray-400 text-lg">
             Describe your training problem. Get a structured plan.
           </p>
-          <div className="flex justify-center mt-4">
-            <a href="/log" className="text-gray-500 hover:text-white text-sm border border-gray-700 rounded-lg px-4 py-2 transition">
-              View My Training Log →
-          <a href="/profile" className="text-gray-500 hover:text-white text-sm border border-gray-700 rounded-lg px-4 py-2 transition">Fighter Profile →</a>
-            </a>
-          </div>
         </div>
+
         <textarea
           className="w-full bg-gray-900 border border-gray-700 rounded-xl p-4 text-white placeholder-gray-500 resize-none h-36 focus:outline-none focus:border-red-500 transition"
-          placeholder="e.g. I keep getting passed from open guard..."
+          placeholder="e.g. I keep getting passed from open guard... 或者用中文描述你的问题"
           value={problem}
           onChange={(e) => setProblem(e.target.value)}
         />
@@ -55,6 +50,7 @@ export default function Home() {
         >
           Generate My Training Plan
         </button>
+
         <div className="mt-8">
           <p className="text-gray-500 text-sm mb-3">Try an example:</p>
           <div className="flex flex-col gap-2">
@@ -68,6 +64,19 @@ export default function Home() {
               </button>
             ))}
           </div>
+        </div>
+
+        <div className="mt-10 grid grid-cols-2 gap-3">
+          <a href="/log" className="flex flex-col items-center justify-center bg-gray-900 hover:bg-gray-800 border border-gray-700 rounded-xl px-4 py-5 transition text-center">
+            <div className="text-2xl mb-1">📋</div>
+            <div className="text-white font-semibold text-sm">Training Log</div>
+            <div className="text-gray-500 text-xs mt-0.5">View past sessions</div>
+          </a>
+          <a href="/profile" className="flex flex-col items-center justify-center bg-gray-900 hover:bg-gray-800 border border-red-900 rounded-xl px-4 py-5 transition text-center">
+            <div className="text-2xl mb-1">🥋</div>
+            <div className="text-white font-semibold text-sm">Fighter Profile</div>
+            <div className="text-gray-500 text-xs mt-0.5">Analyze your game</div>
+          </a>
         </div>
       </div>
     </main>
