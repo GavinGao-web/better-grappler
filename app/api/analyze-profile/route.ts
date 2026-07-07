@@ -1,8 +1,29 @@
+export const runtime = 'edge';
+
 import Anthropic from '@anthropic-ai/sdk';
 
 const client = new Anthropic();
 
+const rateLimitMap = new Map<string, { count: number; resetTime: number }>();
+
+function checkRateLimit(ip: string): boolean {
+  const now = Date.now();
+  const limit = rateLimitMap.get(ip);
+  if (!limit || now > limit.resetTime) {
+    rateLimitMap.set(ip, { count: 1, resetTime: now + 24 * 60 * 60 * 1000 });
+    return true;
+  }
+  if (limit.count >= 20) return false;
+  limit.count++;
+  return true;
+}
+
 export async function POST(req: Request) {
+  const ip = req.headers.get('x-forwarded-for') || 'unknown';
+  if (!checkRateLimit(ip)) {
+    return Response.json({ error: 'Daily limit reached. Try again tomorrow.' }, { status: 429 });
+  }
+
   const profile = await req.json();
 
   const winRate = profile.wins && profile.losses
@@ -34,14 +55,12 @@ Overall rating guidelines (be realistic, not generous):
 - Purple belt 3-5 years: 62-73
 - Brown belt 5-7 years: 70-82
 - Black belt 7+ years: 78-95
-- Adjust up for strong competition record, down for weak game areas
-- Body type and physical attributes can give small bonuses
 
 Respond ONLY with a JSON object, no markdown:
 {
-  "archetype": "2-3 word archetype (e.g. Guard Wizard, Pressure Passer, Leg Lock Hunter)",
-  "description": "2 sentence description of this fighter's style and identity",
-  "overall": <realistic number based on guidelines above>,
+  "archetype": "2-3 word archetype",
+  "description": "2 sentence description",
+  "overall": <realistic number>,
   "attributes": {
     "topControl": <1-10>,
     "bottomDefense": <1-10>,
@@ -52,8 +71,8 @@ Respond ONLY with a JSON object, no markdown:
   },
   "strengths": ["strength 1", "strength 2", "strength 3"],
   "weaknesses": ["weakness 1", "weakness 2"],
-  "gameplan": "2 sentence recommended gameplan",
-  "nextFocus": "Single most important improvement area"
+  "gameplan": "2 sentence gameplan",
+  "nextFocus": "Single most important improvement"
 }`;
 
   const response = await client.messages.create({

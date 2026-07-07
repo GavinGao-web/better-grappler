@@ -1,10 +1,30 @@
+export const runtime = 'edge';
+
 import Anthropic from '@anthropic-ai/sdk';
 
 const client = new Anthropic();
 
-export async function POST(req: Request) {
-  const { problem } = await req.json();
+const rateLimitMap = new Map<string, { count: number; resetTime: number }>();
 
+function checkRateLimit(ip: string): boolean {
+  const now = Date.now();
+  const limit = rateLimitMap.get(ip);
+  if (!limit || now > limit.resetTime) {
+    rateLimitMap.set(ip, { count: 1, resetTime: now + 24 * 60 * 60 * 1000 });
+    return true;
+  }
+  if (limit.count >= 20) return false;
+  limit.count++;
+  return true;
+}
+
+export async function POST(req: Request) {
+  const ip = req.headers.get('x-forwarded-for') || 'unknown';
+  if (!checkRateLimit(ip)) {
+    return Response.json({ error: 'Daily limit reached. Try again tomorrow.' }, { status: 429 });
+  }
+
+  const { problem } = await req.json();
   const isChinese = /[\u4e00-\u9fff]/.test(problem);
 
   const prompt = isChinese ? `你是一位专业的BJJ（巴西柔术）教练。根据学员描述的训练问题，生成一份结构化的训练计划。
