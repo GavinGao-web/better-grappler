@@ -78,6 +78,26 @@ export default function Home() {
             <div className="text-gray-500 text-xs mt-0.5">Analyze your game</div>
           </a>
         </div>
+
+        <div className="mt-10 bg-gray-900 border border-gray-800 rounded-2xl p-6">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="text-2xl">🥋</div>
+            <div>
+              <h3 className="text-white font-bold text-sm">来自创始人 Gavin</h3>
+              <p className="text-gray-500 text-xs">Better Grappler</p>
+            </div>
+          </div>
+          <p className="text-gray-300 text-sm leading-relaxed">
+            各位柔友你们好，我是 Better Grappler AI训练产品的创始人，你们可以叫我 Gavin（加文）。由衷的感到高兴你们能愿意来玩 Better Grappler，我也非常希望产品的一些功能能够在一定程度上帮助你们成为更优秀的缠斗手！本人当前美本大二在读，在被学业持续拷打的同时也满怀憧憬的在世界各地穷游串馆训练。从一名摔跤手转型柔术，训练时长接近两年，但总体来说并不算能打。但一切的一切不妨碍我希望在柔术世界里留下一点自己的痕迹 —— 于是我创建了 Better Grappler，希望能帮助到同样也在不断挨打的小伙伴们拥有更具体的训练计划。你们可以在聊天框输入任何想问的问题（但最好是柔术哈），也可以填写自己的训练背景生成自己的"球星卡"，如果最近有比赛需求的柔友也可以用它来研究自己的打法以及分析潜在对手。最后，希望 Better Grappler 能够切实有效地为所有柔友们提供便利！
+          </p>
+          <div className="mt-4 pt-4 border-t border-gray-800 flex items-center justify-between">
+            <p className="text-gray-500 text-xs">功能建议 / 合作咨询</p>
+            <a href="mailto:gwc18758079475@gmail.com" className="text-red-400 hover:text-red-300 text-xs font-medium transition">
+              gwc18758079475@gmail.com →
+            </a>
+          </div>
+        </div>
+
       </div>
     </main>
   );
